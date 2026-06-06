@@ -55,5 +55,5 @@ t2 = timealg(shellsort, RandomArr2)
 #T1 = N1^x   T2/T1 = (N2/N1)^x ln(T2/T1) = ln(N2/N1)^x  
 #T2 = N2^x   ln(T2/T1) = xln(N2/N1) x = ln(T2/T1)/ln(N2/N1)
 pow = math.log(t2/t1)/math.log(n2/n1)
-print(f'Теоретическая сложность алгоримта: O(n^{pow})')
+print(f'Теоретическаяяя сложность алгоримта: O(n^{pow})')
 print(4/3)
