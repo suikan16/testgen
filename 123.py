@@ -34,26 +34,40 @@ def shellsort(arr):
         g -= 1 
         
     return arr
-def timealg(sortf, arr):
-    start_cpu = time.perf_counter()
-    sortf(arr)
-    end_cpu = time.perf_counter()
-    el = (end_cpu-start_cpu)*10**6
-    return el
+def timealg(sortf, original_arr, runs=100):
+    total_time = 0
+    for _ in range(runs):
+        arr_copy = original_arr.copy() 
+        
+        start_cpu = time.perf_counter()
+        sortf(arr_copy)
+        end_cpu = time.perf_counter()
+        
+        total_time += (end_cpu - start_cpu) * 10**6
+        
+    return total_time / runs
+def genarr(n):
+    sort_arr = [x for x in range(1,n+1)]
+
+    random_arr = sort_arr.copy()
+    random.shuffle(random_arr)
+
+    rev_arr = sort_arr[::-1]
+    return random_arr, sort_arr, rev_arr
+
+def compl(arr1, arr2, n1, n2):
+    t1 = timealg(shellsort, arr1, runs=1000)
+    t2 = timealg(shellsort, arr2, runs=1000)
+    return math.log(t2/t1)/math.log(n2/n1)
 n1 = int(input())
-RandomArr1 = [x for x in range(1, n1+1)]
-random.shuffle(RandomArr1)
-
 n2 = int(input())
-RandomArr2 = [x for x in range(1, n2+1)]
-random.shuffle(RandomArr2)
+RandArr1, SortArr1, RevArr1 = genarr(n1)
+RandArr2, SortArr2, RevArr2 = genarr(n2)
 
-t1 = timealg(shellsort, RandomArr1)
-t2 = timealg(shellsort, RandomArr2)
+pow_rand = compl(RandArr1, RandArr2, n1, n2)
+pow_sort = compl(SortArr1, SortArr2, n1, n2)
+pow_rev = compl(RevArr1, RevArr2, n1, n2)
+print(f'Теоретическая сложность алгоримта в лучшем: O(n^{pow_sort})')
+print(f'Теоретическая сложность алгоримта в среднем: O(n^{pow_rand})')
+print(f'Теоретическая сложность алгоримта в худшем: O(n^{pow_rev})')
 
-#Доказательство сложности Алгоритма Шелл Сорт Циура
-#T1 = N1^x   T2/T1 = (N2/N1)^x ln(T2/T1) = ln(N2/N1)^x  
-#T2 = N2^x   ln(T2/T1) = xln(N2/N1) x = ln(T2/T1)/ln(N2/N1)
-pow = math.log(t2/t1)/math.log(n2/n1)
-print(f'Теоретическаяяя сложность алгоримта: O(n^{pow})')
-print(4/3)
